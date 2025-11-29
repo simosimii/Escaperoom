@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wortprüfung — Dekarbonisierung</title>
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --accent:#0f62fe;
+      --success:#198754;
+      --danger:#dc3545;
+      --muted:#6b7280;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:linear-gradient(180deg,var(--bg),#eef2ff 60%);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      color:#0f172a;
+    }
+
+    .card{
+      background:var(--card);
+      width:100%;
+      max-width:680px;
+      padding:28px;
+      border-radius:12px;
+      box-shadow:0 6px 20px rgba(16,24,40,0.08);
+      text-align:center;
+    }
+
+    h1{ margin:0 0 8px; font-size:1.4rem; }
+    p.lead{ margin:0 0 18px; color:var(--muted); }
+
+    form{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    input[type="text"]{
+      flex:1 1 320px;
+      min-width:220px;
+      padding:12px 14px;
+      border-radius:10px;
+      border:1px solid #e6e8ee;
+      font-size:1rem;
+      outline:none;
+      transition:box-shadow .15s, border-color .15s;
+    }
+    input[type="text"]:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 0 4px rgba(15,98,254,0.08);
+    }
+
+    button{
+      padding:11px 16px;
+      border-radius:10px;
+      border:0;
+      background:var(--accent);
+      color:white;
+      font-weight:600;
+      cursor:pointer;
+      font-size:0.95rem;
+      transition:transform .08s ease, opacity .12s;
+    }
+    button:active{ transform:translateY(1px); }
+    button[aria-disabled="true"]{ opacity:.6; cursor:default; }
+
+    .message{
+      min-height:36px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      font-weight:600;
+      border-radius:8px;
+      padding:10px 14px;
+      margin-top:6px;
+      width:100%;
+    }
+
+    .msg-hidden{ visibility:hidden; height:0; padding:0; margin:0; }
+
+    .msg-success{
+      background:linear-gradient(90deg, rgba(25,135,84,0.08), rgba(25,135,84,0.04));
+      color:var(--success);
+      border:1px solid rgba(25,135,84,0.12);
+    }
+
+    .msg-fail{
+      background:linear-gradient(90deg, rgba(220,53,69,0.06), rgba(220,53,69,0.03));
+      color:var(--danger);
+      border:1px solid rgba(220,53,69,0.12);
+    }
+
+    /* small flourish */
+    .badge{
+      display:inline-block;
+      padding:6px 8px;
+      border-radius:999px;
+      background:#f0f4ff;
+      color:var(--accent);
+      font-size:0.8rem;
+      font-weight:700;
+    }
+
+    @media (max-width:420px){
+      .card{ padding:18px; }
+      form{ gap:8px; }
+      button{ width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main" aria-labelledby="title">
+    <div style="display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:14px;">
+      <span class="badge">Demo</span>
+      <h1 id="title">Textprüfung auf "Dekarbonisierung"</h1>
+    </div>
+    <p class="lead">Gib das richtige Wort ein — Groß-/Kleinschreibung wird ignoriert. Drücke Enter oder klicke auf "Prüfen".</p>
+
+    <form id="wordForm" novalidate>
+      <label for="word" class="sr-only" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">
+        Wort eingeben
+      </label>
+      <input id="word" name="word" type="text" inputmode="text" autocomplete="off" placeholder="Schreibe hier..." aria-describedby="hint" />
+      <button id="checkBtn" type="submit">Prüfen</button>
+    </form>
+
+    <div id="hint" class="message msg-hidden" aria-live="polite"></div>
+    <p style="margin-top:14px;color:var(--muted);font-size:0.9rem;">Tipp: Das genaue Wort ist <strong>Dekarbonisierung</strong>.</p>
+  </main>
+
+  <script>
+    // JavaScript: einfache Validierung, Case-insensitive, trim
+    (function () {
+      const target = 'dekarbonisierung'; // wir vergleichen case-insensitive
+      const form = document.getElementById('wordForm');
+      const input = document.getElementById('word');
+      const hint = document.getElementById('hint');
+      const btn = document.getElementById('checkBtn');
+
+      function showMessage(text, ok) {
+        hint.classList.remove('msg-hidden','msg-success','msg-fail');
+        hint.textContent = text;
+        hint.classList.add(ok ? 'msg-success' : 'msg-fail');
+        // kurze animation: focus aufs Feld nach 700ms
+        setTimeout(()=> {
+          input.focus();
+          input.select();
+        }, 700);
+      }
+
+      function hideMessage() {
+        hint.className = 'message msg-hidden';
+        hint.textContent = '';
+      }
+
+      // on submit (klick oder Enter)
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const val = input.value.trim().toLowerCase();
+        if (!val) {
+          showMessage('Bitte gib ein Wort ein.', false);
+          return;
+        }
+        if (val === target) {
+          showMessage('🎉 Herzlichen Glückwunsch', true);
+        } else {
+          showMessage('Try again', false);
+        }
+      });
+
+      // optional: live-feedback (z. B. clear message when typing)
+      input.addEventListener('input', function () {
+        // wenn Nutzer tippt, blendet die Nachricht nach kurzer Zeit aus
+        if (!hint.classList.contains('msg-hidden')) {
+          // debounce-like hide
+          clearTimeout(input._hideTimer);
+          input._hideTimer = setTimeout(hideMessage, 800);
+        }
+      });
+
+      // Accessibility: Enter/Return already submits form; focus to input on load
+      window.addEventListener('load', () => input.focus());
+    })();
+  </script>
+</body>
+</html>
