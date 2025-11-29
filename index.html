@@ -133,8 +133,8 @@
       <label for="word" class="sr-only" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">
         Wort eingeben
       </label>
-      <input id="word" name="word" type="text" inputmode="text" autocomplete="off" placeholder="Schreibe hier..." aria-describedby="hint" />
-      <button id="checkBtn" type="submit">Prüfen</button>
+      <input id="word" name="word" type="text" inputmode="text" autocomplete="off" placeholder="Type here..." aria-describedby="hint" />
+      <button id="checkBtn" type="submit">Check</button>
     </form>
 
     <div id="hint" class="message msg-hidden" aria-live="polite"></div>
@@ -174,7 +174,7 @@
           return;
         }
         if (val === target) {
-          showMessage('🎉 Congratulations, you’ve escaped! Now hurry to room XX and see if your team is the first to arrive!', true);
+          showMessage('🎉 Congratulations, you’ve escaped! Now hurry to room RJ.8.267 and see if your team is the first to arrive!', true);
         } else {
           showMessage('❌ Try again', false);
         }
