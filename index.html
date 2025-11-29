@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Wortprüfung — Dekarbonisierung</title>
+  <title>Codeword</title>
   <style>
     :root{
       --bg:#f6f7fb;
@@ -128,7 +128,7 @@
       <span class="badge">Demo</span>
       <h1 id="title">Textprüfung auf "Dekarbonisierung"</h1>
     </div>
-    <p class="lead">Gib das richtige Wort ein — Groß-/Kleinschreibung wird ignoriert. Drücke Enter oder klicke auf "Prüfen".</p>
+    <p class="lead">(uppercase and lowercase are ignored)</p>
 
     <form id="wordForm" novalidate>
       <label for="word" class="sr-only" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">
@@ -176,9 +176,9 @@
           return;
         }
         if (val === target) {
-          showMessage('🎉 Herzlichen Glückwunsch', true);
+          showMessage('🎉 Congratulations, you’ve escaped! Now hurry to room XX and see if your team is the first to arrive!', true);
         } else {
-          showMessage('Try again', false);
+          showMessage('❌ Try again', false);
         }
       });
 
